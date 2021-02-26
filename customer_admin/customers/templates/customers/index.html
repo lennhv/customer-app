@@ -1,0 +1,69 @@
+{% extends "customers/base.html" %}
+
+{% load i18n static %}
+
+{% block content %}  
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content" id="content-main">
+            <div class="d-flex justify-content-end p-2">
+                <a class="btn btn-primary" href="{% url 'customer-create-view' %}">{% trans 'Create Customer' %}</a>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div style="width:50%">
+                    <table class="table m-auto ">
+                        <thead>
+                            <tr>
+                            <th scope="col">{% trans 'ID' %}</th>
+                            <th scope="col">{% trans 'Name' %}</th>
+                            <th scope="col">{% trans 'Address' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for customer in object_list %}
+                            <tr>
+                                <th scope="row">{{ customer.id }}</th>
+                                <td>{{ customer.name }}</td>
+                                <td>{{ customer.address }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><th scope="row"></th><td>&nbsp;</td><td></td></tr>
+                            <tr><th scope="row"></th><td>&nbsp;</td><td></td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-end m-2">
+                        <p class="text-muted">{% trans 'Customers' %}: 
+                            {% if object_list %}
+                                {{ object_list|length }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center m-2">
+                        <div class="pagination">
+                            <span class="page-links">
+                                {% if page_obj.has_previous %}
+                                    <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">{% trans 'Previous'%}</a>
+                                {% else %}
+                                    <span class="text-muted">{% trans 'Previous'%}</span>
+                                {% endif %}
+                                <span class="page-current">
+                                    {% trans 'Page' %} {{ page_obj.number }} {% trans 'of' %} {{ page_obj.paginator.num_pages }}.
+                                </span>
+                                {% if page_obj.has_next %}
+                                    <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">{% trans 'Next' %}</a>
+                                {% else %}
+                                <span class="text-muted">{% trans 'Next' %}</span>
+                                {% endif %}
+                            </span>
+                        </div> 
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}
